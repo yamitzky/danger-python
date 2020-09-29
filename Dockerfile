@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.8-slim
 
 LABEL maintainer="Jakub Turek <jkbturek@gmail.com>"
 LABEL "com.github.actions.name"="danger-python"
@@ -7,6 +7,7 @@ LABEL "com.github.actions.icon"="zap"
 LABEL "com.github.actions.color"="blue"
 
 # Install dependencies
+RUN apt-get update -y --fix-missing && apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs
 
@@ -18,5 +19,3 @@ COPY . /usr/src/danger-python
 RUN cd /usr/src/danger-python && \
     poetry config virtualenvs.create false && \
     poetry install --no-dev
-
-ENTRYPOINT ["npx", "--package", "danger", "danger-python", "ci"]
